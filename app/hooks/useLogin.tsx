@@ -1,39 +1,66 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import api from '../lib/api';
-import Cookies from 'js-cookie';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
+import api from "../lib/api";
 
 export function useLogin() {
-  const router = useRouter();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
 
-  function entrar(evento: React.FormEvent) {
-    evento.preventDefault(); 
+    const router = useRouter();
 
-    const dadosLogin = {
-      username: username,
-      password: password
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
+    async function login(evento: React.FormEvent) {
+
+        evento.preventDefault();
+
+       const dadosLogin = {
+        username,
+        password
     };
 
-    api.post('/users/auth', dadosLogin)
-      .then((resposta) => {
-        Cookies.set('logged', 'true', { expires: 1 });
-        Cookies.set('userName', resposta.data.name, { expires: 1 }); 
+        console.log(dadosLogin);
 
-        router.push('/dashboard');
-      })
-      .catch(() => {
-        alert('Erro: Usuário ou senha incorretos!');
-      });
-  }
+        try {
 
-  return {
-    username, setUsername,
-    password, setPassword,
-    entrar
-  };
+            const resposta = await api.post(
+                "/users/auth",
+                dadosLogin
+            );
+
+            Cookies.set("logged", "true");
+
+            Cookies.set(
+                "userName",
+                resposta.data.name
+            );
+
+            alert("Login realizado com sucesso!");
+
+            router.push("/dashboard");
+
+        } catch (error: any) {
+
+    console.log(error.response);
+
+    alert("Erro no login!");
+
+    }
+
+    }
+
+    return {
+
+        username,
+        setUsername,
+
+        password,
+        setPassword,
+
+        login
+
+    };
 }

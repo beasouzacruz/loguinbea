@@ -5,36 +5,42 @@ import { useLogin } from './hooks/useLogin';
 import './formStyle.css';
 
 export default function Home() {
-  const { 
-    username, setUsername, 
-    password, setPassword, 
-    entrar 
+
+  const {
+    username,
+    setUsername,
+    password,
+    setPassword,
+    login
   } = useLogin();
 
   return (
+
     <div className="login-container">
+
       <div className="login-card">
+
         <h1>Área de Acesso</h1>
-        
-        <form onSubmit={entrar}>
-          
+
+        <form onSubmit={login}>
+
           <div className="input-group">
             <input
               type="text"
               placeholder="Digite seu Usuário"
               value={username}
-              onChange={(e) => setUsername(e.target.value)} 
+              onChange={(e) => setUsername(e.target.value)}
               className="input-field"
               required
             />
           </div>
-          
+
           <div className="input-group">
             <input
               type="password"
               placeholder="Digite sua Senha"
               value={password}
-              onChange={(e) => setPassword(e.target.value)} 
+              onChange={(e) => setPassword(e.target.value)}
               className="input-field"
               required
             />
@@ -43,12 +49,21 @@ export default function Home() {
           <button type="submit" className="btn-login">
             Entrar no Sistema
           </button>
+
         </form>
 
         <div className="footer-link">
+
           <span>Ainda não tem conta? </span>
-          <Link href="/cadastro">Cadastre-se aqui</Link>
+
+          <Link href="/cadastro">
+            Cadastre-se aqui
+          </Link>
+
         </div>
+
       </div>
+
     </div>
-  )};
+  );
+}
